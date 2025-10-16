@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人简介 - 秋收</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .profile-section {
+            display: flex;
+            padding: 30px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .profile-img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #6a11cb;
+            margin-right: 30px;
+        }
+        
+        .profile-info {
+            flex: 1;
+        }
+        
+        .profile-info h2 {
+            color: #6a11cb;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+        
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .info-table caption {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2575fc;
+            text-align: left;
+        }
+        
+        .info-table th, .info-table td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        
+        .info-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            width: 25%;
+        }
+        
+        .info-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .section {
+            padding: 30px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+        }
+        
+        .section-title {
+            color: #2575fc;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .project-item {
+            margin-bottom: 25px;
+            padding: 15px;
+            border-left: 4px solid #6a11cb;
+            background-color: #f8f9ff;
+        }
+        
+        .project-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .project-desc {
+            color: #666;
+        }
+        
+        .skills-list, .hobbies-list {
+            margin-top: 15px;
+            padding-left: 20px;
+        }
+        
+        .skills-list li, .hobbies-list li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .skills-list i, .hobbies-list i {
+            margin-right: 10px;
+            color: #6a11cb;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .self-evaluation {
+            line-height: 1.8;
+            text-align: justify;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .profile-section {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .profile-img {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>孔铭的个人简介</h1>
+            <p>软件工程专业学生</p>
+        </header>
+        
+        <section class="profile-section">
+            <img src="a45bc8a1b654d038a8d193f5449ddc32" alt="个人头像" class="profile-img">
+            <div class="profile-info">
+                <h2>基本信息</h2>
+                <table class="info-table">
+                    <caption>个人信息表</caption>
+                    <tr>
+                        <th>姓名</th>
+                        <td>孔铭</td>
+                        <th>性别</th>
+                        <td>男</td>
+                    </tr>
+                    <tr>
+                        <th>出生日期</th>
+                        <td>2006年12月</td>
+                        <th>专业</th>
+                        <td>软件工程</td>
+                    </tr>
+                    <tr>
+                        <th>学历</th>
+                        <td>本科</td>
+                        <th>联系电话</th>
+                        <td>18863863691</td>
+                    </tr>
+                    <tr>
+                        <th>电子邮箱</th>
+                        <td colspan="3">2487573106@qq.com</td>
+                    </tr>
+                    <tr>
+                        <th>联系地址</th>
+                        <td colspan="3">山东省菏泽市定陶区</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">技能证书</h2>
+            <ol class="skills-list">
+                <li><i class="fas fa-certificate"></i>全国计算机等级考试二级证书</li>
+                <li><i class="fas fa-certificate"></i>Web前端开发工程师认证</li>
+                <li><i class="fas fa-certificate"></i>Python编程能力认证</li>
+                <li><i class="fas fa-certificate"></i>大学英语四六级证书</li>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">兴趣爱好</h2>
+            <ol class="hobbies-list">
+                <li><i class="fas fa-code"></i>编程与算法研究</li>
+                <li><i class="fas fa-book"></i>阅读技术书籍与博客</li>
+                <li><i class="fas fa-basketball-ball"></i>乒乓球运动</li>
+                <li><i class="fas fa-camera"></i>长跑</li>
+            </ol>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">自我评价</h2>
+            <div class="self-evaluation">
+                <p>我是一名对技术充满热情的软件工程专业学生，上课认真学习专业知识，课后认真复习知识。</p>
+                
+                <p>我善于团队协作，能够与团队成员有效沟通，共同解决问题。我具备较强的自学能力，能够快速掌握新技术并应用于实际项目中。</p>
+                
+                <p>除了专业技能外，我还注重培养自己的综合素质。我积极参与学校组织的各类活动，我乐于接受挑战，面对困难能够保持积极心态，寻找解决方案。我相信，持续学习和不断进步是技术人员最重要的品质。</p>
+                
+                <p>未来，我希望能够在软件开发领域深耕，特别是在前端技术和人工智能交叉领域有所建树。我期待加入一个优秀的团队，与志同道合的伙伴一起创造有价值的产品，为用户提供更好的体验。我相信凭借我的专业知识、实践经验和学习能力，我能够为团队带来价值，并在工作中不断成长。</p>
+            </div>
+        </section>
+        
+        <footer>
+            <p>© 2025 孔铭的个人简介 | 最后更新: 2025年10月</p>
+        </footer>
+    </div>
+</body>
+</html>
