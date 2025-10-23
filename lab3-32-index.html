@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>书香阁 - 在线图书商城</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 头部区域 */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            border-bottom: 5px solid #e74c3c;
+        }
+        
+        .logo {
+            float: left;
+            font-size: 28px;
+            font-weight: bold;
+            margin-left: 20px;
+            cursor: pointer;
+        }
+        
+        .logo span {
+            color: #e74c3c;
+        }
+        
+        nav {
+            float: right;
+            margin-right: 20px;
+        }
+        
+        nav ul {
+            list-style: none;
+        }
+        
+        nav ul li {
+            float: left;
+            margin-left: 25px;
+            position: relative;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 5px 10px;
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+        
+        nav ul li a:hover {
+            background-color: #e74c3c;
+        }
+        
+        /* 清除浮动 */
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+        
+        /* 主体内容区域 */
+        .main-content {
+            padding: 30px 20px;
+            background-color: #fff;
+        }
+        
+        /* 侧边栏 */
+        .sidebar {
+            width: 250px;
+            float: left;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #e74c3c;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+        }
+        
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+        
+        .sidebar ul li a {
+            color: #555;
+            text-decoration: none;
+            display: block;
+            padding: 8px 10px;
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+        
+        .sidebar ul li a:hover {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        /* 主要内容 */
+        .content {
+            width: 650px;
+            float: left;
+            margin: 0 20px;
+        }
+        
+        .book-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .book-item {
+            width: 48%;
+            background-color: #f9f9f9;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .book-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .book-img {
+            height: 200px;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+            font-size: 14px;
+        }
+        
+        .book-info {
+            padding: 15px;
+        }
+        
+        .book-info h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .book-info p {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .price {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        /* 右侧边栏 */
+        .right-sidebar {
+            width: 220px;
+            float: right;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .right-sidebar h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #e74c3c;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .news-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        
+        .news-item h4 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+        
+        .news-item p {
+            color: #777;
+            font-size: 14px;
+        }
+        
+        /* 页脚区域 */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            clear: both;
+        }
+        
+        .footer-content {
+            width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-links {
+            margin-bottom: 20px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #e74c3c;
+        }
+        
+        .copyright {
+            color: #aaa;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部区域 -->
+        <header class="clearfix">
+            <div class="logo">图书雅苑</span></div>
+            <nav>
+                <ul>
+                    <li><a href="#">首页</a></li>
+                    <li><a href="#">图书分类</a></li>
+                    <li><a href="#">畅销榜单</a></li>
+                    <li><a href="#">新书推荐</a></li>
+                    <li><a href="#">关于我们</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <!-- 主体内容区域 -->
+        <div class="main-content clearfix">
+            <!-- 左侧边栏 -->
+            <aside class="sidebar">
+                <h3>图书分类</h3>
+                <ul>
+                    <li><a href="#">文学小说</a></li>
+                    <li><a href="#">人文社科</a></li>
+                    <li><a href="#">经济管理</a></li>
+                    <li><a href="#">教育学习</a></li>
+                    <li><a href="#">科技科普</a></li>
+                    <li><a href="#">生活艺术</a></li>
+                    <li><a href="#">儿童读物</a></li>
+                </ul>
+                
+                <h3 style="margin-top: 30px;">热门标签</h3>
+                <ul>
+                    <li><a href="#">畅销书</a></li>
+                    <li><a href="#">经典名著</a></li>
+                    <li><a href="#">获奖作品</a></li>
+                    <li><a href="#">作者签名版</a></li>
+                </ul>
+            </aside>
+            
+            <!-- 主要内容 -->
+            <main class="content">
+                <h2 style="color: #2c3e50; margin-bottom: 20px; border-bottom: 2px solid #e74c3c; padding-bottom: 10px;">热门图书</h2>
+                
+                <div class="book-list">
+                    <div class="book-item">
+                        <div class="t015a856147eaa3c886-img">《时间简史》封面图</div>
+                        <div class="book-info">
+                            <h4>时间简史</h4>
+                            <p>史蒂芬·霍金 / 科普</p>
+                            <p>探索时间与空间的经典之作，带你领略宇宙的奥秘。</p>
+                            <div class="price">¥45.80</div>
+                        </div>
+                    </div>
+                    
+                    <div class="book-item">
+                        <div class="R-C-img">《百年孤独》封面图</div>
+                        <div class="book-info">
+                            <h4>百年孤独</h4>
+                            <p>加西亚·马尔克斯 / 文学</p>
+                            <p>魔幻现实主义文学的代表作，布恩迪亚家族七代人的传奇故事。</p>
+                            <div class="price">¥39.90</div>
+                        </div>
+                    </div>
+                    
+                    <div class="book-item">
+                        <div class="R-C(1)-img">《人类简史》封面图</div>
+                        <div class="book-info">
+                            <h4>人类简史</h4>
+                            <p>尤瓦尔·赫拉利 / 历史</p>
+                            <p>从动物到上帝，十万年的人类演进史，刷新你的认知。</p>
+                            <div class="price">¥68.00</div>
+                        </div>
+                    </div>
+                    
+                    <div class="book-item">
+                        <div class="O1CN01kSI4Fi1cw9wwIlwH6_!!0-item_pic.jpg_300x300-img">《活着》封面图</div>
+                        <div class="book-info">
+                            <h4>活着</h4>
+                            <p>余华 / 文学</p>
+                            <p>一部充满血泪的小说，讲述人对苦难的承受能力和对世界的乐观态度。</p>
+                            <div class="price">¥28.00</div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            
+            <!-- 右侧边栏 -->
+            <aside class="right-sidebar">
+                <h3>最新公告</h3>
+                <div class="news-item">
+                    <h4>图书雅苑会员日</h4>
+                    <p>每月15日，会员购书享8折优惠，更有积分兑换好礼！</p>
+                </div>
+                
+                <div class="news-item">
+                    <h4>作家签售会</h4>
+                    <p>知名作家将于本周六下午2点在本店举行新书签售会。</p>
+                </div>
+                
+                <div class="news-item">
+                    <h4>暑期阅读季</h4>
+                    <p>暑期特惠活动开始，全场图书满100减20，儿童读物特价促销。</p>
+                </div>
+                
+                <h3 style="margin-top: 30px;">畅销榜单</h3>
+                <div class="news-item">
+                    <h4>1. 《三体》</h4>
+                    <p>刘慈欣 / 科幻</p>
+                </div>
+                
+                <div class="news-item">
+                    <h4>2. 《解忧杂货店》</h4>
+                    <p>东野圭吾 / 小说</p>
+                </div>
+                
+                <div class="news-item">
+                    <h4>3. 《原则》</h4>
+                    <p>瑞·达利欧 / 经济</p>
+                </div>
+            </aside>
+        </div>
+        
+        <!-- 页脚区域 -->
+        <footer>
+            <div class="footer-content">
+                    &copy;图书雅苑 2025年10月23
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
