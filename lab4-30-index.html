@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数字图书展展示平台</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* 固定导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-item {
+            position: relative;
+            margin-left: 25px;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        /* 下拉菜单 */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            color: #333;
+            min-width: 180px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 4px;
+            padding: 8px 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+            z-index: 1001;
+        }
+        
+        .nav-item:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-item {
+            display: block;
+            padding: 10px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #f0f0f0;
+        }
+        
+        /* 主体内容 */
+        .container {
+            max-width: 1200px;
+            margin: 80px auto 20px;
+            padding: 0 20px;
+        }
+        
+        /* 筛选区域 */
+        .filter-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .filter-title {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            color: #2c3e50;
+        }
+        
+        .filter-options {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .filter-group {
+            position: relative;
+        }
+        
+        .filter-btn {
+            background-color: #ecf0f1;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .filter-btn:hover {
+            background-color: #dde4e6;
+        }
+        
+        /* 下拉筛选菜单 */
+        .filter-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 4px;
+            padding: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+            z-index: 999;
+        }
+        
+        .filter-group:hover .filter-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .filter-option {
+            padding: 8px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .filter-option:hover {
+            background-color: #f0f0f0;
+        }
+        
+        /* 图书网格 */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        
+        /* 图书卡片 */
+        .book-card {
+            position: relative;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .book-image {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+        }
+        
+        .book-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .book-card:hover .book-img {
+            transform: scale(1.05);
+        }
+        
+        /* 悬浮操作面板 */
+        .book-actions {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .book-card:hover .book-actions {
+            opacity: 1;
+        }
+        
+        .action-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .action-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        /* 图片放大预览 */
+        .preview-container {
+            position: absolute;
+            top: 0;
+            left: 110%;
+            width: 300px;
+            height: 400px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.9);
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+            z-index: 100;
+        }
+        
+        .book-image:hover .preview-container {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+        
+        .preview-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* 图书信息 */
+        .book-info {
+            padding: 15px;
+        }
+        
+        .book-title {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        
+        .book-author {
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+        
+        .book-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        
+        /* 固定购物车 */
+        .cart-fixed {
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            background-color: #e74c3c;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 999;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+        
+        .cart-fixed:hover {
+            transform: scale(1.1);
+            background-color: #c0392b;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #2c3e50;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+        
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            right: 30px;
+            bottom: 100px;
+            background-color: #3498db;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s, background-color 0.3s;
+            z-index: 999;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background-color: #2980b9;
+        }
+        
+        /* 消息提示框 */
+        .message-toast {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background-color: #2ecc71;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(100px);
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+            z-index: 1001;
+        }
+        
+        .message-toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+        
+        /* 加载动画 */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 2000;
+        }
+        
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 30px 0;
+            margin-top: 50px;
+            text-align: center;
+        }
+        
+        /* 轮播图指示器 */
+        .carousel-indicators {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+        
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .indicator.active {
+            background-color: white;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .filter-options {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .books-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .preview-container {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">数字图书展示平台</div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">图书分类</a>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">文学小说</a>
+                        <a href="#" class="dropdown-item">科技科普</a>
+                        <a href="#" class="dropdown-item">经济管理</a>
+                        <a href="#" class="dropdown-item">生活艺术</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">畅销榜单</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">特价专区</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 主体内容 -->
+    <div class="container">
+        <!-- 筛选区域 -->
+        <section class="filter-section">
+            <h2 class="filter-title">筛选图书</h2>
+            <div class="filter-options">
+                <div class="filter-group">
+                    <button class="filter-btn">
+                        分类 <span>▼</span>
+                    </button>
+                    <div class="filter-dropdown">
+                        <div class="filter-option">文学小说</div>
+                        <div class="filter-option">科技科普</div>
+                        <div class="filter-option">经济管理</div>
+                        <div class="filter-option">生活艺术</div>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <button class="filter-btn">
+                        价格 <span>▼</span>
+                    </button>
+                    <div class="filter-dropdown">
+                        <div class="filter-option">0-50元</div>
+                        <div class="filter-option">50-100元</div>
+                        <div class="filter-option">100元以上</div>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <button class="filter-btn">
+                        评分 <span>▼</span>
+                    </button>
+                    <div class="filter-dropdown">
+                        <div class="filter-option">4.5分以上</div>
+                        <div class="filter-option">4.0-4.5分</div>
+                        <div class="filter-option">3.5-4.0分</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 图书网格 -->
+        <div class="books-grid">
+            <!-- 图书卡片1 -->
+            <div class="book-card">
+                <div class="book-image">
+                    <img src="https://via.placeholder.com/300x400/3498db/ffffff?text=文学经典" alt="图书封面" class="book-img">
+                    <div class="book-actions">
+                        <button class="action-btn">加入购物车</button>
+                        <button class="action-btn">立即购买</button>
+                    </div>
+                    <div class="preview-container">
+                        <img src="https://via.placeholder.com/600x800/3498db/ffffff?text=文学经典+放大预览" alt="图书封面放大" class="preview-img">
+                    </div>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">文学经典作品集</h3>
+                    <p class="book-author">作者: 文学大师</p>
+                    <p class="book-price">¥77.00</p>
+                </div>
+            </div>
+
+            <!-- 图书卡片2 -->
+            <div class="book-card">
+                <div class="book-image">
+                    <img src="https://via.placeholder.com/300x400/e74c3c/ffffff?text=科技前沿" alt="图书封面" class="book-img">
+                    <div class="book-actions">
+                        <button class="action-btn">加入购物车</button>
+                        <button class="action-btn">立即购买</button>
+                    </div>
+                    <div class="preview-container">
+                        <img src="https://via.placeholder.com/600x800/e74c3c/ffffff?text=科技前沿+放大预览" alt="图书封面放大" class="preview-img">
+                    </div>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">科技前沿探索</h3>
+                    <p class="book-author">作者: 科技专家</p>
+                    <p class="book-price">¥68.00</p>
+                </div>
+            </div>
+
+            <!-- 图书卡片3 -->
+            <div class="book-card">
+                <div class="book-image">
+                    <img src="https://via.placeholder.com/300x400/2ecc71/ffffff?text=经济管理" alt="图书封面" class="book-img">
+                    <div class="book-actions">
+                        <button class="action-btn">加入购物车</button>
+                        <button class="action-btn">立即购买</button>
+                    </div>
+                    <div class="preview-container">
+                        <img src="https://via.placeholder.com/600x800/2ecc71/ffffff?text=经济管理+放大预览" alt="图书封面放大" class="preview-img">
+                    </div>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">现代经济管理</h3>
+                    <p class="book-author">作者: 管理大师</p>
+                    <p class="book-price">¥78.00</p>
+                </div>
+            </div>
+
+            <!-- 图书卡片4 -->
+            <div class="book-card">
+                <div class="book-image">
+                    <img src="https://via.placeholder.com/300x400/f39c12/ffffff?text=生活艺术" alt="图书封面" class="book-img">
+                    <div class="book-actions">
+                        <button class="action-btn">加入购物车</button>
+                        <button class="action-btn">立即购买</button>
+                    </div>
+                    <div class="preview-container">
+                        <img src="https://via.placeholder.com/600x800/f39c12/ffffff?text=生活艺术+放大预览" alt="图书封面放大" class="preview-img">
+                    </div>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">生活艺术指南</h3>
+                    <p class="book-author">作者: 艺术家</p>
+                    <p class="book-price">¥66.00</p>
+                </div>
+            </div>
+
+            <!-- 图书卡片5 -->
+            <div class="book-card">
+                <div class="book-image">
+                    <img src="https://via.placeholder.com/300x400/9b59b6/ffffff?text=历史传记" alt="图书封面" class="book-img">
+                    <div class="book-actions">
+                        <button class="action-btn">加入购物车</button>
+                        <button class="action-btn">立即购买</button>
+                    </div>
+                    <div class="preview-container">
+                        <img src="https://via.placeholder.com/600x800/9b59b6/ffffff?text=历史传记+放大预览" alt="图书封面放大" class="preview-img">
+                    </div>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">历史人物传记</h3>
+                    <p class="book-author">作者: 历史学家</p>
+                    <p class="book-price">¥76.00</p>
+                </div>
+            </div>
+
+            <!-- 图书卡片6 -->
+            <div class="book-card">
+                <div class="book-image">
+                    <img src="https://via.placeholder.com/300x400/1abc9c/ffffff?text=心理学" alt="图书封面" class="book-img">
+                    <div class="book-actions">
+                        <button class="action-btn">加入购物车</button>
+                        <button class="action-btn">立即购买</button>
+                    </div>
+                    <div class="preview-container">
+                        <img src="https://via.placeholder.com/600x800/1abc9c/ffffff?text=心理学+放大预览" alt="图书封面放大" class="preview-img">
+                    </div>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">心理学入门</h3>
+                    <p class="book-author">作者: 心理学家</p>
+                    <p class="book-price">¥92.00</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 固定购物车 -->
+    <div class="cart-fixed">
+        <span>🛒</span>
+        <div class="cart-count">3</div>
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <div class="back-to-top">
+        <span>↑</span>
+    </div>
+
+    <!-- 消息提示框 -->
+    <div class="message-toast">
+        商品已成功加入购物车！
+    </div>
+
+    <!-- 加载动画 -->
+    <div class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>© 2025 数字图书展销平台</p>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            const backToTop = document.querySelector('.back-to-top');
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        document.querySelector('.back-to-top').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        document.querySelectorAll('.action-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const toast = document.querySelector('.message-toast');
+                toast.classList.add('show');
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            });
+        });
+
+        function showLoading() {
+            const loading = document.querySelector('.loading-overlay');
+            loading.classList.add('active');
+            
+            setTimeout(() => {
+                loading.classList.remove('active');
+            }, 2000);
+        }
+        window.addEventListener('load', showLoading);
+    </script>
+</body>
+</html>
